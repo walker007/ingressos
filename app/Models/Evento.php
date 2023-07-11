@@ -28,13 +28,4 @@ class Evento extends Model
         "created_at",
         "updated_at"
     ];
-
-    protected $appends = [
-        "nome_slug"
-    ];
-
-    public function getNomeSlugAttribute()
-    {
-        return Str::slug($this->nome);
-    }
 }
