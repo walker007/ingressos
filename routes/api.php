@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AutenticacaoController;
 use App\Http\Controllers\EventosController;
 use App\Http\Controllers\IngressoController;
 use Illuminate\Http\Request;
@@ -35,4 +36,8 @@ Route::prefix("/ingressos")->group(function () {
     Route::post("/", [IngressoController::class, "store"]);
     Route::put("/{id}", [IngressoController::class, "update"]);
     Route::delete("/{id}", [IngressoController::class, "destroy"]);
+});
+
+Route::prefix("/credenciais")->group(function () {
+    Route::post("/registrar", [AutenticacaoController::class, "registrar"]);
 });
