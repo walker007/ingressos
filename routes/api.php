@@ -31,7 +31,7 @@ Route::prefix("/eventos")->middleware("auth:api")->group(function () {
 
 
 Route::prefix("/ingressos")->group(function () {
-    Route::get("/", [IngressoController::class, "index"]);
+    Route::get("/", [IngressoController::class, "index"])->middleware("permissao:ADMINISTRADOR");
     Route::get("/{id}", [IngressoController::class, "show"]);
     Route::post("/", [IngressoController::class, "store"]);
     Route::put("/{id}", [IngressoController::class, "update"]);
