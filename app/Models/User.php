@@ -7,8 +7,9 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use Tymon\JWTAuth\Contracts\JWTSubject;
 
-class User extends Authenticatable
+class User extends Authenticatable implements JWTSubject
 {
     use HasApiTokens, HasFactory, Notifiable;
 
@@ -46,5 +47,21 @@ class User extends Authenticatable
     public function permissoes()
     {
         return $this->belongsToMany(Permissao::class, "permissoes_user");
+    }
+
+    public function getJWTIdentifier()
+    {
+        return $this->getKey();
+    }
+
+    public function getJWTCustomClaims(): array
+    {
+        return [
+            "email" =>  $this->email,
+            "nome" => $this->name,
+            "permissoes" => $this->permissoes->map(function (Permissao $permissao) {
+                return $permissao->nome;
+            })->toArray()
+        ];
     }
 }

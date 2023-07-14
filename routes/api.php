@@ -21,7 +21,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::prefix("/eventos")->group(function () {
+Route::prefix("/eventos")->middleware("auth:api")->group(function () {
     Route::post("/", [EventosController::class, "store"]);
     Route::get("/", [EventosController::class, "index"]);
     Route::get("/{id}", [EventosController::class, "show"]);
@@ -40,4 +40,7 @@ Route::prefix("/ingressos")->group(function () {
 
 Route::prefix("/credenciais")->group(function () {
     Route::post("/registrar", [AutenticacaoController::class, "registrar"]);
+    Route::post("/login", [AutenticacaoController::class, "login"]);
+    Route::get("/me", [AutenticacaoController::class, "me"]);
+    Route::put("/refresh", [AutenticacaoController::class, "refresh"]);
 });
