@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\PedidoController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -16,3 +17,7 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return response(null, 403);
 });
+
+
+Route::get("pagamento/success", [PedidoController::class, "success"])->name("pagamento.success");
+Route::get("pagamento/error", [PedidoController::class, "error"])->name("pagamento.error");

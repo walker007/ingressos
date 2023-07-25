@@ -3,6 +3,7 @@
 use App\Http\Controllers\AutenticacaoController;
 use App\Http\Controllers\EventosController;
 use App\Http\Controllers\IngressoController;
+use App\Http\Controllers\PedidoController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -21,21 +22,28 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::prefix("/eventos")->middleware("auth:api")->group(function () {
-    Route::post("/", [EventosController::class, "store"]);
+Route::prefix("/eventos")->group(function () {
     Route::get("/", [EventosController::class, "index"]);
     Route::get("/{id}", [EventosController::class, "show"]);
-    Route::put("/{id}", [EventosController::class, "update"]);
-    Route::delete("/{id}", [EventosController::class, "destroy"]);
+    Route::post("/", [EventosController::class, "store"])->middleware(["auth:api", "permissao:PROMOTOR"]);
+    Route::put("/{id}", [EventosController::class, "update"])->middleware(["auth:api", "permissao:PROMOTOR"]);
+    Route::delete("/{id}", [EventosController::class, "destroy"])->middleware(["auth:api", "permissao:PROMOTOR"]);
 });
 
+Route::prefix("/pedidos")->middleware(["auth:api"])->group(function () {
+    Route::get("/", [PedidoController::class, "index"]);
+    Route::post("/", [PedidoController::class, "store"]);
+    Route::post("/{id}/checkout", [PedidoController::class, "checkout"]);
+});
+
+Route::post('/pedidos/webhook', [PedidoController::class, "webhook"]);
 
 Route::prefix("/ingressos")->group(function () {
-    Route::get("/", [IngressoController::class, "index"])->middleware("permissao:ADMINISTRADOR");
+    Route::get("/", [IngressoController::class, "index"]);
     Route::get("/{id}", [IngressoController::class, "show"]);
-    Route::post("/", [IngressoController::class, "store"]);
-    Route::put("/{id}", [IngressoController::class, "update"]);
-    Route::delete("/{id}", [IngressoController::class, "destroy"]);
+    Route::post("/", [IngressoController::class, "store"])->middleware(["auth:api", "permissao:PROMOTOR"]);
+    Route::put("/{id}", [IngressoController::class, "update"])->middleware(["auth:api", "permissao:PROMOTOR"]);
+    Route::delete("/{id}", [IngressoController::class, "destroy"])->middleware(["auth:api", "permissao:PROMOTOR"]);
 });
 
 Route::prefix("/credenciais")->group(function () {
