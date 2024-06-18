@@ -1,6 +1,6 @@
 # Api de Ingressos
 
-Api de Ingressos is a PHP-based application designed to facilitate the sale of event tickets. The application supports different permission levels, allowing promoters to register events and ticket batches for sale, while clients can purchase tickets. The payment integration is handled through Stripe.
+Api de Ingressos is a PHP-based application designed to facilitate the sale of event tickets. The application supports different permission levels, allowing promoters to register events and ticket batches for sale, while clients can purchase tickets. The payment integration is handled through Stripe. The authentication is using JWT.
 
 ## Features
 
